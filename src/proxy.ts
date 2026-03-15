@@ -12,6 +12,8 @@ export function proxy(req: NextRequest) {
   if (pathname.startsWith("/dashboard")) {
     const token = req.cookies.get("token")?.value;
 
+    //console.log("cookies:", req.cookies.getAll());
+
     if (!token) {
       // Redirect to login if token is missing
       return NextResponse.redirect(new URL("/login", req.url));
