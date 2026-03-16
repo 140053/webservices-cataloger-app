@@ -10,7 +10,7 @@ export async function loginAction(formData: FormData) {
     "User-Agent": "cataloger-app"
    }
 
-  const res = await fetch("http://localhost:8001/auth/login", {
+  const res = await fetch(process.env.NODE_ENV_BACKEND_API + "/auth/login", {
     method: "POST",
     body: formData,
     headers: headersList,
