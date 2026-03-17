@@ -40,21 +40,14 @@ const data = {
       ),
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "Add Book",
+          url: "/dashboard/catalog/book/add",
         },
         {
-          title: "Get Started",
-          url: "#",
+          title: "Add Thesis",
+          url: "/dashboard/catalog/thesis/add",
         },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
+        
       ],
     },
    

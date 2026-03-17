@@ -28,7 +28,7 @@ export function useSession() {
         }
 
         const data = await res.json();
-        console.log("session response:", data);
+      
       
        setUser(data.user); 
       } catch (err) {
