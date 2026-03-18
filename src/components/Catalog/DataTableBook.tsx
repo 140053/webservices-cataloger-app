@@ -4,8 +4,7 @@ import { APIMasterDataBook } from "@/utils/book"
 import { DataTable } from "../data-table"
 import { useEffect, useState } from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import BookCatalogDialog, { EditBookDialog } from "./re-usable/Dialog/Edit-Book-Dialog"
-import { Button } from "../ui/button"
+import BookCatalogDialog from "./re-usable/Dialog/Edit-Book-Dialog"
 
 type Book = {
   bkID: number
