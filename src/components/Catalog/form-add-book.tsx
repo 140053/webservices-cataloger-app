@@ -38,15 +38,17 @@ type BookForm = {
   str29: string;  // Copy count
   str30: string;  // Inn
   str31: string;  // Out
-  str33: string;  // Content notes
-  str34: string;  // Summary
-  str35: string;  // Abstract / times out
+  str32: string;  // content
+  str33: string;  // summary
+  str34: string;  // abstract
+  str35: string;  // times out
   str36: string;  // Variant title
   str37: string;  // URL
-  str38: string;  // Content type
-  str39: string;  // Media type
-  str40: string;  // Carrier type
-  str41: string;  // Cover image filename
+  str38: string; // Content type
+  str39: string; // Media type 
+  str40: string; // Carrier type
+  str41: string; // Cover image filename
+  str42: string; // 
   gc: boolean;
   tref: boolean;
   fr: boolean;
@@ -68,17 +70,67 @@ type BookForm = {
 };
 
 const defaultForm: BookForm = {
-  str0: "", str1: "", str2: "", str3: "", str4: "", str5: "", str6: "",
-  str7: "", str8: "", str9: "", str10: "", str11: "", str12: "", str13: "",
-  str14: "", str15: "", str16: "", str17: "", str18: "", str19: "", str20: "",
-  str21: "", str22: "", str23: "", str24: "", str25: "", str26: "English",
-  str27: "CIRCULATION", str28: "", str29: "1", str30: "1", str31: "0",
-  str33: "", str34: "", str35: "", str36: "", str37: "", str38: "Text",
-  str39: "Unmediated", str40: "Volume", str41: "",
-  gc: false, tref: false, fr: false, circ: true, ref: false, fil: false,
-  sp: false, bio: false, res: false, schl: false, easy: false, fic: false,
+  str0: "",
+  str1: "",
+  str2: "",
+  str3: "", 
+  str4: "", 
+  str5: "", 
+  str6: "",
+  str7: "", 
+  str8: "", 
+  str9: "", 
+  str10: "", 
+  str11: "", 
+  str12: "", 
+  str13: "",
+  str14: "", 
+  str15: "", 
+  str16: "", 
+  str17: "", 
+  str18: "", 
+  str19: "", 
+  str20: "",
+  str21: "", 
+  str22: "", 
+  str23: "", 
+  str24: "", 
+  str25: "", 
+  str26: "English",
+  str27: "CIRCULATION", 
+  str28: "", 
+  str29: "1", 
+  str30: "1", 
+  str31: "0",
+  str32: "",
+  str33: "", 
+  str34: "", 
+  str35: "0", 
+  str36: "", 
+  str37: "", 
+  str38: "Text",
+  str39: "Unmediated", 
+  str40: "Volume", 
+  str41: "", 
+  str42: "",
+  gc: false, 
+  tref: false, 
+  fr: false, 
+  circ: true, 
+  ref: false, 
+  fil: false,
+  sp: false, 
+  bio: false, 
+  res: false, 
+  schl: false, 
+  easy: false, 
+  fic: false,
   con: false,
-  strAcquisitionMode: "", strDonor: "", strCoding: "", bkID: "", isUpdate: false,
+  strAcquisitionMode: "", 
+  strDonor: "", 
+  strCoding: "", 
+  bkID: "", 
+  isUpdate: false,
 };
 
 // ─── Step config ──────────────────────────────────────────────────────────────
@@ -97,64 +149,52 @@ const STEPS = [
 
 function buildMaintext(form: BookForm): string {
   const pairs: [string, string][] = [
-    ["001", form.str0],  ["002", form.str1],  ["003", form.str2],
-    ["004", form.str3],  ["005", form.str4],  ["006", form.str5],
-    ["007", form.str6],  ["008", form.str7],  ["009", form.str8],
-    ["0010", form.str9], ["0011", form.str10],["0012", form.str11],
-    ["0013", form.str12],["0014", form.str13],["0015", form.str14],
-    ["0016", form.str15],["0017", form.str16],["0018", form.str17],
-    ["0019", form.str18],["0020", form.str19],["0021", form.str20],
-    ["0022", form.str21],["0023", form.str22],["0024", form.str23],
-    ["0025", form.str24],["0026", form.str25],["0027", form.str26],
-    ["0028", form.str27],["0029", form.str28],["0030", form.str29],
-    ["0031", form.str30],["0032", form.str31],["0033", form.str33],
-    ["0034", form.str34],["0035", form.str35],["0036", form.str36],
-    ["0037", form.str37],["0038", form.str38],["0039", form.str39],
-    ["0040", form.str40],["0041", form.str41],
+    ["001", form.str0],  
+    ["002", form.str1],  
+    ["003", form.str2],
+    ["004", form.str3],  
+    ["005", form.str4],  
+    ["006", form.str5],
+    ["007", form.str6],  
+    ["008", form.str7],  
+    ["009", form.str8],
+    ["0010", form.str9], 
+    ["0011", form.str10],
+    ["0012", form.str11],
+    ["0013", form.str12],
+    ["0014", form.str13],
+    ["0015", form.str14],
+    ["0016", form.str15],
+    ["0017", form.str16],
+    ["0018", form.str17],
+    ["0019", form.str18],
+    ["0020", form.str19],
+    ["0021", form.str20],
+    ["0022", form.str21],
+    ["0023", form.str22],
+    ["0024", form.str23],
+    ["0025", form.str24],
+    ["0026", form.str25],
+    ["0027", form.str26],
+    ["0028", form.str27],
+    ["0029", form.str28],
+    ["0030", form.str29],
+    ["0031", form.str30],
+    ["0032", form.str31],
+    ["0033", form.str32],
+    ["0034", form.str33],
+    ["0035", form.str34],
+    ["0036", form.str35],
+    ["0037", form.str36],
+    ["0038", form.str37],
+    ["0039", form.str38],
+    ["0040", form.str39],
+    ["0041", form.str40],
+    ["0042", form.str41],
   ];
-  return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("\n").replace(/\\/g, "/");
+  return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("").replace(/\\/g, "/");
 }
 
-function buildPayloadv1(form: BookForm) {
-  const title = form.str0;
-  const maintext = buildMaintext(form).replace(/"/g, "").replace(/'/g, "`");
-  const now = new Date().toISOString();
-
-  return {
-    Title:          title,
-    Maintext:       maintext,
-    gc:             form.gc   ? 1 : 0,
-    tr:             form.tref ? 1 : 0,
-    fr:             form.fr   ? 1 : 0,
-    circ:           form.circ ? 1 : 0,
-    ref:            form.ref  ? 1 : 0,
-    fil:            form.fil  ? 1 : 0,
-    sm:             form.sp   ? 1 : 0,
-    bio:            form.bio  ? 1 : 0,
-    res:            form.res  ? 1 : 0,
-    schl:           form.schl ? 1 : 0,
-    easy:           form.easy ? 1 : 0,
-    fic:            form.fic  ? 1 : 0,
-    restricted:     form.con  ? 1 : 0,
-    filsts:         null,
-    Copy:           parseInt(form.str29) || 1,
-    Inn:            parseInt(form.str30) || 1,
-    tm:             "book",
-    acquisitionmode: form.strAcquisitionMode,
-    donor:          form.strDonor,
-    coding:         form.strCoding,
-    branch:         form.str27 || 'Pili Library',
-    images:         form.str41,
-    updated_by:     "SYSTEM",
-    date_entered:   now,
-    date_updated: form.isUpdate ? now : null,
-    // ✅ ID handling
-    ...(form.isUpdate
-        ? { bkID: form.bkID }
-        : {} // remove bkID if DB auto-generates
-      ),
-  };
-}
 
 function buildPayload(form: BookForm) {
     const title = form.str0;
@@ -181,7 +221,7 @@ function buildPayload(form: BookForm) {
       t_Out: 0,
       t_TimesOut: 0,
   
-      images: form.str41 || "",
+      images: form.str41 || null,
       tm: "book",
   
       gc: form.gc ? 1 : 0,
@@ -197,14 +237,14 @@ function buildPayload(form: BookForm) {
   
       schl: form.schl ? 1 : 0,
   
-      acquisitionmode: form.strAcquisitionMode || "",
-      donor: form.strDonor || "",
-      branch: "Pili Library",
+      acquisitionmode: form.strAcquisitionMode || null,
+      donor: form.strDonor || null,
+      branch: "Library",
   
       restricted: form.con ? 1 : 0,
       filsts: null,
   
-      coding: form.strCoding || "",
+      coding: form.strCoding || null,
   
       // ✅ optional: include only if updating
       ...(form.isUpdate ? { bkID: form.bkID, date_updated: now } : {}),
@@ -420,7 +460,11 @@ export default function BookCatalogForm() {
         </nav>
 
         {/* Form body */}
-        <form onSubmit={handleSubmit} className="catalog-body">
+        <form onSubmit={handleSubmit}  onKeyDown={(e) => {
+              if (e.key === "Enter" && step !== 7) {
+                e.preventDefault();
+              }
+            }} className="catalog-body">
           <div className="step-card">
 
             {/* ── Step 1: Title & Authorship ─────────────────────────────── */}
@@ -492,11 +536,12 @@ export default function BookCatalogForm() {
                 <Field label="ISBN" name="str18" value={form.str18} onChange={handleChange} hint="str18" />
                 <Field label="Call Number Prefix" name="str23" value={form.str23} onChange={handleChange} hint="str23" />
                 <Field label="Call Number" name="str24" value={form.str24} onChange={handleChange} hint="str24" />
-                <Field label="In-house Coding" name="strCoding" value={form.strCoding} onChange={handleChange} />
+                <Field label="In-house Coding" name="strCoding" value={form.strCoding} onChange={handleChange} hint="strCoding" />
                 <Field label="Accession Number" name="str25" value={form.str25} onChange={handleChange} hint="str25" />
                 <Field label="Copy Count" name="str29" value={form.str29} onChange={handleChange} hint="str29" />
                 <Field label="Copies In" name="str30" value={form.str30} onChange={handleChange} hint="str30" />
                 <Field label="Copies Out" name="str31" value={form.str31} onChange={handleChange} hint="str31" />
+                <Field label="Times Out" name="str35" value={form.str35} onChange={handleChange} hint="str35" />
                 <SelectField label="Language" name="str26" value={form.str26} onChange={handleChange}
                   options={["English", "Filipino", "French", "Spanish", "Chinese", "Japanese", "Other"]} />
                 <SelectField label="Branch / Location" name="str27" value={form.str27} onChange={handleChange}
@@ -519,9 +564,10 @@ export default function BookCatalogForm() {
               <section className="step-section">
                 <h2 className="step-heading">Notes &amp; Acquisition</h2>
                 <p className="step-desc">Descriptive notes, abstract, and acquisition metadata</p>
-                <TextArea label="Content Notes" name="str33" value={form.str33} onChange={handleChange} hint="str33" />
-                <TextArea label="Summary" name="str34" value={form.str34} onChange={handleChange} hint="str34" />
-                <TextArea label="Abstract" name="str35" value={form.str35} onChange={handleChange} hint="str35" />
+                <TextArea label="Content Notes" name="str32" value={form.str32} onChange={handleChange} hint="str32" />
+                <TextArea label="Summary" name="str33" value={form.str33} onChange={handleChange} hint="str33" />
+                <TextArea label="Abstract" name="str34" value={form.str34} onChange={handleChange} hint="str34" />
+                
                 <SelectField label="Acquisition Mode" name="strAcquisitionMode" value={form.strAcquisitionMode}
                   onChange={handleChange} options={["", "Purchase", "Donation", "Exchange", "Transfer"]} />
                 <Field label="Donor" name="strDonor" value={form.strDonor} onChange={handleChange} />
@@ -571,11 +617,11 @@ export default function BookCatalogForm() {
 
                   <div className="preview-section-label">Library &amp; Access</div>
                   <PreviewRow label="ISBN" value={form.str18} />
-                  <PreviewRow label="Call Number" value={`${form.str23} ${form.str24}`.trim()} />
+                  <PreviewRow label="Call Number" value={`${form.str23} ${form.strCoding} ${form.str24}`.trim()} />
                   <PreviewRow label="Accession" value={form.str25} />
                   <PreviewRow label="Copy Count" value={form.str29} />
                   <PreviewRow label="Language" value={form.str26} />
-                  <PreviewRow label="Branch" value={form.str27} />
+                  <PreviewRow label="Location " value={form.str27} />
                   <PreviewRow label="URL" value={form.str37} />
                   <PreviewRow label="General Circulation" value={form.gc} />
                   <PreviewRow label="Reference" value={form.ref} />
@@ -583,8 +629,8 @@ export default function BookCatalogForm() {
                   <PreviewRow label="Restricted" value={form.con} />
 
                   <div className="preview-section-label">Notes &amp; Acquisition</div>
-                  <PreviewRow label="Abstract" value={form.str35} />
-                  <PreviewRow label="Summary" value={form.str34} />
+                  <PreviewRow label="Abstract" value={form.str34} />
+                  <PreviewRow label="Summary" value={form.str33} />
                   <PreviewRow label="Acquisition Mode" value={form.strAcquisitionMode} />
                   <PreviewRow label="Donor" value={form.strDonor} />
                 </div>
@@ -612,11 +658,20 @@ export default function BookCatalogForm() {
             <span className="nav-counter">{step} / {STEPS.length}</span>
 
             {step < STEPS.length ? (
-              <button type="button" onClick={() => setStep(s => s + 1)} className="btn-primary">
+              <button
+                type="button"
+                onClick={(e) => { e.preventDefault(); setStep(s => s + 1); }}
+                className="btn-primary"
+              >
                 Next →
               </button>
             ) : (
-              <button type="submit" disabled={status === "loading"} className="btn-submit">
+              <button
+                type="button"
+                disabled={status === "loading"}
+                onClick={handleSubmit}
+                className="btn-submit"
+              >
                 {status === "loading" ? "Saving…" : "Save to Catalog ✓"}
               </button>
             )}

@@ -47,6 +47,10 @@ const data = {
           title: "Add Thesis",
           url: "/dashboard/catalog/thesis/add",
         },
+        {
+          title: "Add Index",
+          url: "/dashboard/catalog/serials/index/add",
+        },
         
       ],
     },
