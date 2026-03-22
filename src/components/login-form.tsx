@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,9 +18,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { loginAction } from "@/utils/auth"
-
-
-
+import { useActionState } from "react"
 
 
 
@@ -26,8 +26,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-
-  
+  const [state, formAction, pending] = useActionState(loginAction, null)
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -35,16 +34,19 @@ export function LoginForm({
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
-           
+
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={loginAction}>
+          <form action={formAction}>
             <FieldGroup>
-             
+
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Login with your Credentials
               </FieldSeparator>
+              {state?.error && (
+                <p className="text-sm text-red-500 text-center">{state.error}</p>
+              )}
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -58,13 +60,13 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  
                 </div>
                 <Input id="password" type="password" name="password" required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
-                
+                <Button type="submit" disabled={pending}>
+                  {pending ? "Logging in…" : "Login"}
+                </Button>
               </Field>
             </FieldGroup>
           </form>

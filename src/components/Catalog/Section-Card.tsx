@@ -22,13 +22,13 @@ export function SectionCards() {
         const fetchData = async () => {
           const data = await APIMaster("/books/totalbooks")  // return number
 
-          const mycatalogall = await APIMaster("/books/catalog/me") // all catalog by user
-          const tmtotal = await APIMaster("/thesis/catalog/me")  // Thesis catalog by user
-          const smtotal = await APIMaster("/serials/index/me")  // Thesis catalog  by user
+          const mycatalogall = await APIMaster("/books/catalog/me", "all catalog") // all catalog by user
+          const tmtotal = await APIMaster("/thesis/catalog/me", "thesis catalog")  // Thesis catalog by user
+          const smtotal = await APIMaster("/serials/index/me", "serials index")  // Thesis catalog  by user
 
-          const btoday = await APIMaster("/books/catalog/today")  // Book catalog today by user 
-          const ttoday = await APIMaster("/thesis/catalog/today")  // Thesis catalog today by user
-          const stoday = await APIMaster("/serials/index/today")  // Thesis catalog today by user
+          const btoday = await APIMaster("/books/catalog/today", "book catalog today")  // Book catalog today by user 
+          const ttoday = await APIMaster("/thesis/catalog/today", "thesis catalog today")  // Thesis catalog today by user
+          const stoday =  await APIMaster("/serials/index/today", "serials catalog today")  // Serials catalog today by user
 
          
           setBookbyTitle(data)

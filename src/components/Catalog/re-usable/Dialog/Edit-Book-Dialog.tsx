@@ -1,7 +1,7 @@
 "use client";
 
-import { APIMasterPostWithJSON } from "@/utils/book";
-import { useState } from "react";
+import { APIMasterPostWithJSON, APIMasterPutWithJSON } from "@/utils/book";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -137,7 +137,7 @@ function buildMaintext(form: BookForm): string {
     ["0037", form.str36], ["0038", form.str37], ["0039", form.str38],
     ["0040", form.str39], ["0041", form.str40], ["0042", form.str41],
   ];
-  return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("").replace(/\\/g, "/");
+  return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("").replace(/\\/g, "/");
 }
 
 function buildPayload(form: BookForm) {
@@ -280,18 +280,49 @@ function SectionDivider({ label }: { label: string }) {
   );
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
+// ─── Maintext parser ──────────────────────────────────────────────────────────
 
-interface BookCatalogDialogProps { 
-  initialData?: Partial<BookForm>;
+const TAG_MAP: Record<string, keyof BookForm> = {
+  "001": "str0",  "002": "str1",  "003": "str2",  "004": "str3",
+  "005": "str4",  "006": "str5",  "007": "str6",  "008": "str7",
+  "009": "str8",  "0010": "str9", "0011": "str10","0012": "str11",
+  "0013": "str12","0014": "str13","0015": "str14","0016": "str15",
+  "0017": "str16","0018": "str17","0019": "str18","0020": "str19",
+  "0021": "str20","0022": "str21","0023": "str22","0024": "str23",
+  "0025": "str24","0026": "str25","0027": "str26","0028": "str27",
+  "0029": "str28","0030": "str29","0031": "str30","0032": "str31",
+  "0033": "str32","0034": "str33","0035": "str34","0036": "str35",
+  "0037": "str36","0038": "str37","0039": "str38","0040": "str39",
+  "0041": "str40","0042": "str41",
+};
+
+
+function parseMaintext(maintext: string): Partial<BookForm> {
+  const result: Partial<BookForm> = {};
+  const regex = /<(\d+)>([^<]*)/g;
+  let match;
+
+  while ((match = regex.exec(maintext)) !== null) {
+    const key = TAG_MAP[match[1]];
+    if (key) {
+      const cleaned = match[2].replace(/\x1E$/, ""); // remove trailing RS char
+      (result as Record<string, string>)[key as string] = cleaned;
+    }
+  }
+
+  return result;
 }
 
-export default function BookCatalogDialog({  
-  
-  initialData,
-}: BookCatalogDialogProps) {
+// ─── Main component ───────────────────────────────────────────────────────────
+
+interface BookCatalogDialogProps {
+  bkID: number;
+  maintext: string;
+}
+
+export default function BookCatalogDialog({ bkID, maintext }: BookCatalogDialogProps) {
   const [step, setStep]         = useState(1);
-  const [form, setForm]         = useState<BookForm>({ ...defaultForm, ...initialData });
+  const [form, setForm]         = useState<BookForm>({ ...defaultForm });
   const [status, setStatus]     = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -324,7 +355,9 @@ export default function BookCatalogDialog({
     setErrorMsg("");
     try {
       const payload = buildPayload(form);
-      const ress = await APIMasterPostWithJSON(`/books/save`, payload);
+      const ress = form.isUpdate
+        ? await APIMasterPutWithJSON(`/books/${form.bkID}`, payload)
+        : await APIMasterPostWithJSON(`/books/save`, payload);
       console.log(ress);
       setStatus("success");
     } catch (err: unknown) {
@@ -353,11 +386,21 @@ export default function BookCatalogDialog({
 
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    if (open) {
+      const parsed = parseMaintext(maintext);
+      setForm({ ...defaultForm, ...parsed, bkID: String(bkID), isUpdate: true });
+      setStep(1);
+      setStatus("idle");
+      setErrorMsg("");
+    }
+  }, [open]);
+
   return (
    <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
             <Button variant="outline" onClick={() => setOpen(true)}>
-            Edit Rule 
+            Edit
             </Button>
         </DialogTrigger>
 

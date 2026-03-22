@@ -13,7 +13,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, LibraryIcon } from "lucide-react"
 
 // This is sample data.
 const data = {
@@ -40,6 +40,10 @@ const data = {
       ),
       items: [
         {
+          title: "Search Catalog",
+          url: "/dashboard/catalog/search",
+        },
+        {
           title: "Add Book",
           url: "/dashboard/catalog/book/add",
         },
@@ -51,7 +55,23 @@ const data = {
           title: "Add Index",
           url: "/dashboard/catalog/serials/index/add",
         },
-        
+      ],
+    },
+    {
+      title: "FRBR Catalog",
+      url: "#",
+      icon: (
+        <LibraryIcon />
+      ),
+      items: [
+        {
+          title: "Works",
+          url: "/dashboard/cataloging",
+        },
+        {
+          title: "New Record",
+          url: "/dashboard/cataloging/new",
+        },
       ],
     },
    

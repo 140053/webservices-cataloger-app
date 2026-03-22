@@ -15,6 +15,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { ThemeToggle } from "@/components/theme-toggle"
 import React from "react"
 
 export interface BreadcrumbItemType {
@@ -40,7 +41,7 @@ export function DashboardLayout({ children, breadcrumbs = [] }: PatronLayoutProp
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
+          <div className="flex flex-1 items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"
@@ -66,6 +67,9 @@ export function DashboardLayout({ children, breadcrumbs = [] }: PatronLayoutProp
                 ))}
               </BreadcrumbList>
             </Breadcrumb>
+            <div className="ml-auto">
+              <ThemeToggle />
+            </div>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
