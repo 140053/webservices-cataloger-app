@@ -173,8 +173,8 @@ export default function NewWorkWizard() {
         summary: work.summary || undefined,
         dateOfWork: work.dateOfWork ? Number(work.dateOfWork) : undefined,
       });
-      setWorkId(created.id);
-      setCreatedWorkId(created.id);
+      setWorkId(created.id as number);
+      setCreatedWorkId(created.id as number);
       setStep(2);
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Failed to create work.");
@@ -190,12 +190,12 @@ export default function NewWorkWizard() {
       // Create and link each agent
       for (const a of agents) {
         const agent = await createAgent({ name: a.name, type: a.type });
-        await addWorkAgent(workId, agent.id, a.role);
+        await addWorkAgent(workId, agent.id as number, a.role);
       }
       // Create and link each subject
       for (const s of subjects) {
         const subject = await createSubject(s.term);
-        await addWorkSubject(workId, subject.id);
+        await addWorkSubject(workId, subject.id as number);
       }
       // Classification (optional)
       if (classification.scheme && classification.code.trim()) {
@@ -204,7 +204,7 @@ export default function NewWorkWizard() {
           code: classification.code.trim(),
           description: classification.description || undefined,
         });
-        await addWorkClassification(workId, cls.id);
+        await addWorkClassification(workId, cls.id as number);
       }
       // Call number (optional)
       if (callnumber.scheme && callnumber.classNumber.trim() && callnumber.callNumber.trim()) {
@@ -237,7 +237,7 @@ export default function NewWorkWizard() {
         formOfExpression: expression.formOfExpression || undefined,
         extent: expression.extent || undefined,
       });
-      setExpressionId(created.id);
+      setExpressionId(created.id as number);
       setStep(4);
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Failed to create expression.");
@@ -262,7 +262,7 @@ export default function NewWorkWizard() {
         mediaType: manifestation.mediaType,
         carrierType: manifestation.carrierType,
       });
-      setManifestationId(created.id);
+      setManifestationId(created.id as number);
       setStep(5);
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Failed to create manifestation.");
