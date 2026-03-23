@@ -15,7 +15,7 @@ export async function getSession() {
   if (!token) return null;
 
   try {
-    const res = await fetch("http://127.0.0.1:8001/user/me", {
+    const res = await fetch( process.env.NODE_ENV_BACKEND_API + "/user/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

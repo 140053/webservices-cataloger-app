@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   try {
-    const res = await fetch(process.env.NODE_ENV_BACKEND_API + "/user/me", {
+    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_API + "/user/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
