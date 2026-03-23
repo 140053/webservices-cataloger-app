@@ -1,0 +1,18 @@
+module.exports = {
+    apps: [
+      {
+        name: "cataloger-app",
+        script: "server.js",
+        cwd: ".next/standalone",
+        exec_mode: "fork",
+        instances: 1,
+        env: {
+          NODE_ENV: "production",
+          PORT: 3000,
+          JWT_SECRET:"FOqDtFjZ&-=#0)Zfs#(@,BuW=nlk&MS[!xXmcAEy3-c",
+          NODE_ENV_BACKEND_API: "http://10.2.42.18:8001",
+          NEXT_PUBLIC_BACKEND_API:" http://fastapi_app:8001"
+        }
+      }
+    ]
+  };
