@@ -11,4 +11,4 @@ services:
 
 networks:
   mynet:
-    driver: bridge
+    external: true
