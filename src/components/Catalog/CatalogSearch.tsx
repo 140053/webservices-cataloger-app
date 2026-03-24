@@ -193,9 +193,9 @@ const columns: ColumnDef<BookResult>[] = [
       return (
         <div className="flex gap-1.5 items-center">
           <ViewCatalogDialog book={book as ViewBook} />
-          {book.tm === "book" && <BookCatalogDialog bkID={book.bkID} maintext={book.Maintext ?? ""} />}
-          {book.tm === "td"   && <EditThesisDialog  bkID={book.bkID} maintext={book.Maintext ?? ""} />}
-          {book.tm === "pr"   && <EditSerialsDialog bkID={book.bkID} maintext={book.Maintext ?? ""} />}
+          {book.tm === "book" && <BookCatalogDialog bkID={book.bkID} maintext={book.Maintext ?? ""} book={book ?? ""} />}
+          {book.tm === "td"   && <EditThesisDialog  bkID={book.bkID} maintext={book.Maintext ?? ""}  book={book ?? ""} />}
+          {book.tm === "pr"   && <EditSerialsDialog bkID={book.bkID} maintext={book.Maintext ?? ""}  book={book ?? ""} />}
         </div>
       );
     },
@@ -325,9 +325,9 @@ function ResultCard({ result }: { result: BookResult }) {
         </div>
         <div className="shrink-0 flex flex-col gap-1.5 pt-0.5">
           <ViewCatalogDialog book={result as ViewBook} />
-          {result.tm === "book" && <BookCatalogDialog bkID={result.bkID} maintext={result.Maintext ?? ""} />}
-          {result.tm === "td"   && <EditThesisDialog  bkID={result.bkID} maintext={result.Maintext ?? ""} />}
-          {result.tm === "pr"   && <EditSerialsDialog bkID={result.bkID} maintext={result.Maintext ?? ""} />}
+          {result.tm === "book" && <BookCatalogDialog bkID={result.bkID} maintext={result.Maintext ?? ""}  book={result ?? ""}/>}
+          {result.tm === "td"   && <EditThesisDialog  bkID={result.bkID} maintext={result.Maintext ?? ""}  book={result ?? ""}/>}
+          {result.tm === "pr"   && <EditSerialsDialog bkID={result.bkID} maintext={result.Maintext ?? ""}  book={result ?? ""} />}
         </div>
       </div>
 
