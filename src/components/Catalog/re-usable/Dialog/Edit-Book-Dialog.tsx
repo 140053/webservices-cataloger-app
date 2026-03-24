@@ -25,6 +25,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useSession } from "@/hooks/useSession";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -140,7 +141,7 @@ function buildMaintext(form: BookForm): string {
   return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("").replace(/\\/g, "/");
 }
 
-function buildPayload(form: BookForm) {
+function buildPayload(form: BookForm, branch: string, enteredBy: string, date_entered:string, updatedBy: string) {
   const title = form.str0;
   const maintext = buildMaintext(form).replace(/"/g, "").replace(/'/g, "`");
   const now = new Date().toISOString();
@@ -151,10 +152,14 @@ function buildPayload(form: BookForm) {
     Copy: parseInt(form.str29) || 0, Inn: parseInt(form.str30) || 0,
     t_Out: 0, t_TimesOut: 0, images: form.str41 || null, tm: "book",
     gc: form.gc ? 1 : 0, tr: form.tref ? 1 : 0, easy: form.easy ? 1 : 0,
-    circ: form.circ ? 1 : 0, fr: form.fr ? 1 : 0, sm: form.sp ? 1 : 0,
-    entered_by: "library", date_entered: now, updated_by: "library",
-    schl: form.schl ? 1 : 0, acquisitionmode: form.strAcquisitionMode || null,
-    donor: form.strDonor || null, branch: "Library",
+    circ: form.circ ? 1 : 0, fr: form.fr ? 1 : 0,
+    sm: form.sp ? 1 : 0,
+    entered_by: enteredBy, 
+    date_entered: date_entered, 
+    updated_by: updatedBy,
+    schl: form.schl ? 1 : 0,
+    acquisitionmode: form.strAcquisitionMode || null,
+    donor: form.strDonor || null, branch: branch,
     restricted: form.con ? 1 : 0, filsts: null, coding: form.strCoding || null,
     ...(form.isUpdate ? { bkID: form.bkID, date_updated: now } : {}),
   };
@@ -318,9 +323,15 @@ function parseMaintext(maintext: string): Partial<BookForm> {
 interface BookCatalogDialogProps {
   bkID: number;
   maintext: string;
+  book: { 
+    branch: string; 
+    entered_by: string;
+    date_entered: string;
+   };
 }
 
-export default function BookCatalogDialog({ bkID, maintext }: BookCatalogDialogProps) {
+export default function BookCatalogDialog({ bkID, maintext, book }: BookCatalogDialogProps) {
+  const { user } = useSession();
   const [step, setStep]         = useState(1);
   const [form, setForm]         = useState<BookForm>({ ...defaultForm });
   const [status, setStatus]     = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -354,7 +365,8 @@ export default function BookCatalogDialog({ bkID, maintext }: BookCatalogDialogP
     setStatus("loading");
     setErrorMsg("");
     try {
-      const payload = buildPayload(form);
+      const updatedBy = user?.name || user?.email || "library";
+      const payload = buildPayload(form, book.branch, book.entered_by, book.date_entered, updatedBy);
       const ress = form.isUpdate
         ? await APIMasterPutWithJSON(`/books/${form.bkID}`, payload)
         : await APIMasterPostWithJSON(`/books/save`, payload);

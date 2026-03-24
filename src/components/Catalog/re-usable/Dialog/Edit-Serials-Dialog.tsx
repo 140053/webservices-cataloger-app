@@ -24,6 +24,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useSession } from "@/hooks/useSession";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -107,7 +108,7 @@ function buildMaintext(form: SerialsForm): string {
   return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("").replace(/\\/g, "/");
 }
 
-function buildPayload(form: SerialsForm) {
+function buildPayload(form: SerialsForm, branch: string, enteredBy: string, date_entered:string, updatedBy: string) {
   const now = new Date().toISOString();
   const maintext = buildMaintext(form).replace(/"/g, "").replace(/'/g, "`");
   return {
@@ -120,10 +121,10 @@ function buildPayload(form: SerialsForm) {
     coding: null,
     restricted: form.con ? 1 : 0,
     filsts: null,
-    branch: "Library",
-    entered_by: "library",
-    date_entered: now,
-    updated_by: "library",
+    branch: branch,
+    entered_by: enteredBy,
+    date_entered: date_entered,
+    updated_by: updatedBy,
     bkID: form.bkID,
     date_updated: now,
   };
@@ -217,9 +218,15 @@ function SectionDivider({ label }: { label: string }) {
 interface EditSerialsDialogProps {
   bkID: number;
   maintext: string;
+  book: { 
+    branch: string; 
+    entered_by: string;
+    date_entered: string;
+   };
 }
 
-export default function EditSerialsDialog({ bkID, maintext }: EditSerialsDialogProps) {
+export default function EditSerialsDialog({ bkID, maintext, book }: EditSerialsDialogProps) {
+  const { user } = useSession();
   const [step, setStep]         = useState(1);
   const [form, setForm]         = useState<SerialsForm>({ ...defaultForm });
   const [status, setStatus]     = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -260,7 +267,8 @@ export default function EditSerialsDialog({ bkID, maintext }: EditSerialsDialogP
     setStatus("loading");
     setErrorMsg("");
     try {
-      const payload = buildPayload(form);
+      const updatedBy = user?.name || user?.email || "library";
+      const payload = buildPayload(form,book.branch, book.entered_by, book.date_entered, updatedBy );
       const ress = await APIMasterPutWithJSON(`/books/${form.bkID}`, payload);
       console.log(ress);
       setStatus("success");

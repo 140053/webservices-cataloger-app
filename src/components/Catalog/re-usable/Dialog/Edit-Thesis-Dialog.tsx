@@ -2,6 +2,7 @@
 
 import { APIMasterPutWithJSON } from "@/utils/book";
 import { useState, useEffect } from "react";
+import { useSession } from "@/hooks/useSession";
 import {
   Dialog,
   DialogContent,
@@ -88,6 +89,7 @@ const TAG_MAP: Record<string, keyof ThesisForm> = {
 };
 
 function parseMaintext(maintext: string): Partial<ThesisForm> {
+  console.log(maintext)
   const result: Partial<ThesisForm> = {};
   const regex = /<(\d+)>([^<]*)/g;
   let match;
@@ -113,10 +115,10 @@ function buildMaintext(form: ThesisForm): string {
     ["0016", form.str15], ["0017", form.str16], ["0018", form.str17],
     ["0019", form.str18], ["0020", form.str19],
   ];
-  return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("").replace(/\\/g, "/");
+  return pairs.map(([tag, val]) => `<${tag}>${val.trim()}`).join("").replace(/\\/g, "/");
 }
 
-function buildPayload(form: ThesisForm) {
+function buildPayload(form: ThesisForm, branch: string, enteredBy: string, date_entered:string, updatedBy: string) {
   const now = new Date().toISOString();
   const maintext = buildMaintext(form).replace(/"/g, "").replace(/'/g, "`");
   return {
@@ -129,10 +131,10 @@ function buildPayload(form: ThesisForm) {
     restricted: form.con ? 1 : 0,
     filsts: null,
     coding: form.strCoding || null,
-    branch: "Library",
-    entered_by: "library",
-    date_entered: now,
-    updated_by: "library",
+    branch: branch,
+    entered_by: enteredBy,
+    date_entered: date_entered,
+    updated_by: updatedBy,
     bkID: form.bkID,
     date_updated: now,
   };
@@ -230,9 +232,15 @@ function SectionDivider({ label }: { label: string }) {
 interface EditThesisDialogProps {
   bkID: number;
   maintext: string;
+  book: { 
+    branch: string; 
+    entered_by: string;
+    date_entered: string;
+   };
 }
 
-export default function EditThesisDialog({ bkID, maintext }: EditThesisDialogProps) {
+export default function EditThesisDialog({ bkID, maintext, book }: EditThesisDialogProps) {
+  const { user } = useSession();
   const [step, setStep]         = useState(1);
   const [form, setForm]         = useState<ThesisForm>({ ...defaultForm });
   const [status, setStatus]     = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -241,6 +249,7 @@ export default function EditThesisDialog({ bkID, maintext }: EditThesisDialogPro
 
   useEffect(() => {
     if (open) {
+      //console.log(book)
       const parsed = parseMaintext(maintext);
       setForm({ ...defaultForm, ...parsed, bkID: String(bkID), isUpdate: true });
       setStep(1);
@@ -273,7 +282,8 @@ export default function EditThesisDialog({ bkID, maintext }: EditThesisDialogPro
     setStatus("loading");
     setErrorMsg("");
     try {
-      const payload = buildPayload(form);
+      const updatedBy = user?.name || user?.email || "library";
+      const payload = buildPayload(form, book.branch, book.entered_by, book.date_entered, updatedBy);
       const ress = await APIMasterPutWithJSON(`/books/${form.bkID}`, payload);
       console.log(ress);
       setStatus("success");

@@ -315,12 +315,13 @@ function makeColumns(onDelete: (id: number) => void): ColumnDef<Book>[] { return
     enableHiding: false,
     cell: ({ row }) => {
       const book = row.original
+      //console.log(book)
       return (
         <div className="flex gap-1.5 items-center">
           <ViewCatalogDialog book={book} />
-          {book.tm === "book" && <BookCatalogDialog bkID={book.bkID} maintext={book.Maintext ?? ""} />}
-          {book.tm === "td"   && <EditThesisDialog  bkID={book.bkID} maintext={book.Maintext ?? ""} />}
-          {book.tm === "pr"   && <EditSerialsDialog bkID={book.bkID} maintext={book.Maintext ?? ""} />}
+          {book.tm === "book" && <BookCatalogDialog bkID={book.bkID} maintext={book.Maintext ?? ""} book={book ?? ""} />}
+          {book.tm === "td"   && <EditThesisDialog  bkID={book.bkID} maintext={book.Maintext ?? ""} book={book ?? ""}/>}
+          {book.tm === "pr"   && <EditSerialsDialog bkID={book.bkID} maintext={book.Maintext ?? ""} book={book ?? ""} />}
           <DeleteBookButton bkID={book.bkID} onDelete={onDelete} />
         </div>
       )
